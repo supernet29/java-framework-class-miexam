@@ -78,4 +78,14 @@ public class JdbcContext {
                 }
         }
     }
+
+   public PrepareStatementStrategy makePrepareStatement(String sql, Object[] params) {
+        return connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int i = 1; i <= params.length; i++){
+                preparedStatement.setObject(i, params[i-1]);
+            }
+            return preparedStatement;
+        };
+    }
 }
