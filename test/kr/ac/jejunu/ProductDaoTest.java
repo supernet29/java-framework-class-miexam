@@ -1,8 +1,8 @@
 package kr.ac.jejunu;
 
 import org.junit.Test;
-
 import java.sql.SQLException;
+import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -16,6 +16,28 @@ public class ProductDaoTest {
 
         ProductDao productDao = new ProductDao();
         Product product = productDao.get(id);
+        assertThat(id, is(product.getId()));
+        assertThat(title, is(product.getTitle()));
+        assertThat(price, is(product.getPrice()));
+    }
+
+    @Test
+    public void add() throws Exception{
+        Random random = new Random(System.currentTimeMillis());
+
+        Long id = random.nextLong() % 2147483647;
+        String title = "우차니OS";
+        Integer price = 15000;
+
+        ProductDao productDao = new ProductDao();
+
+        Product product = new Product();
+        product.setId(id);
+        product.setTitle(title);
+        product.setPrice(price);
+        productDao.add(product);
+
+        product = productDao.get(id);
         assertThat(id, is(product.getId()));
         assertThat(title, is(product.getTitle()));
         assertThat(price, is(product.getPrice()));
