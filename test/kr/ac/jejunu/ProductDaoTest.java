@@ -53,4 +53,52 @@ public class ProductDaoTest {
         assertThat(title, is(product.getTitle()));
         assertThat(price, is(product.getPrice()));
     }
+
+    @Test
+    public void update() throws Exception{
+        Random random = new Random(System.currentTimeMillis());
+
+        Long id = random.nextLong() % 2147483647;
+        String title = "우차니OS";
+        Integer price = 15000;
+
+        String newTitle = "WoochanOS";
+        Integer newPrice = 15000;
+
+
+        Product product = new Product();
+        product.setId(id);
+        product.setTitle(title);
+        product.setPrice(price);
+        productDao.add(product);
+
+        product.setTitle(newTitle);
+        product.setPrice(newPrice);
+        productDao.update(product);
+        product = null;
+
+        product = productDao.get(id);
+        assertThat(id, is(product.getId()));
+        assertThat(newTitle, is(product.getTitle()));
+        assertThat(newPrice, is(product.getPrice()));
+    }
+
+    @Test
+    public void delete() throws Exception{
+        Random random = new Random(System.currentTimeMillis());
+
+        Long id = random.nextLong() % 2147483647;
+        String title = "우차니OS";
+        Integer price = 15000;
+
+        Product product = new Product();
+        product.setId(id);
+        product.setTitle(title);
+        product.setPrice(price);
+        productDao.add(product);
+
+        productDao.delete(id);
+        product = productDao.get(id);
+        assertThat(null, is(product));
+    }
 }

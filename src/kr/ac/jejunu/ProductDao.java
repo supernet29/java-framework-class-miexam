@@ -60,7 +60,7 @@ public class ProductDao {
             preparedStatement = connection.prepareStatement("insert into product(id, title, price) values (?, ?, ?)");
             preparedStatement.setLong(1, id);
             preparedStatement.setString(2, title);
-            preparedStatement.setLong(3, price);
+            preparedStatement.setInt(3, price);
             preparedStatement.executeUpdate();
 
         } finally {
@@ -77,5 +77,60 @@ public class ProductDao {
                     e.printStackTrace();
                 }
         }
+    }
+
+    public void delete(Long id) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement("delete from product where id = ?");
+            preparedStatement.setLong(1,id);
+            preparedStatement.executeUpdate();
+        } finally {
+            if(preparedStatement != null)
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            if(connection != null)
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+
+    public void update(Product product) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            Long id = product.getId();
+            String title = product.getTitle();
+            Integer price = product.getPrice();
+
+            preparedStatement = connection.prepareStatement("update product set title=?, price=? where id =?");
+            preparedStatement.setString(1, title);
+            preparedStatement.setInt(2, price);
+            preparedStatement.setLong(3, id);
+            preparedStatement.executeUpdate();
+        } finally {
+            if(preparedStatement != null)
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            if(connection != null)
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+        }
+
     }
 }
